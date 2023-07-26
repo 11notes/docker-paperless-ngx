@@ -5,4 +5,5 @@ FROM paperlessngx/paperless-ngx:1.16.5
   COPY ./rootfs /
 
 RUN set -eux \
+  cd /usr/src/paperless/src \
   pip install django-python3-ldap;

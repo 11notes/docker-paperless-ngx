@@ -6,6 +6,22 @@ import sys
 
 logger = logging.getLogger(__name__)
 
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "loggers": {
+        "django_python3_ldap": {
+            "handlers": ["console"],
+            "level": "INFO",
+        },
+    },
+}
+
 
 # Edit these settings to match your configuration
 #
@@ -21,8 +37,6 @@ LDAP_AUTH_SEARCH_BASE = os.getenv('PAPERLESS_LDAP_AUTH_SEARCH_BASE')
 # the `ldap_sync_users`, `ldap_clean_users` commands will perform an anonymous query.
 LDAP_AUTH_CONNECTION_USERNAME = os.getenv('PAPERLESS_LDAP_AUTH_USER')
 LDAP_AUTH_CONNECTION_PASSWORD = os.getenv('PAPERLESS_LDAP_AUTH_PASSWORD')
-
-logger.info("try bind with %s // %s", LDAP_AUTH_CONNECTION_USERNAME, LDAP_AUTH_CONNECTION_PASSWORD)
 
 LDAP_AUTH_FORMAT_USERNAME = "django_python3_ldap.utils.format_username_active_directory_principal"
 LDAP_AUTH_ACTIVE_DIRECTORY_DOMAIN = os.getenv('PAPERLESS_LDAP_DOMAIN')
