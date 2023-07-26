@@ -3,8 +3,8 @@ import os
 import subprocess
 import sys
 
-
 logger = logging.getLogger(__name__)
+import django_python3_ldap
 
 LOGGING = {
     "version": 1,
@@ -58,8 +58,6 @@ PAPERLESS_LDAP_ADMIN_GROUP = os.getenv('PAPERLESS_LDAP_ADMIN_GROUP_CN')
 #
 
 from .settings import *
-
-
 INSTALLED_APPS.append("django_python3_ldap")
 AUTHENTICATION_BACKENDS.insert(2, "django_python3_ldap.auth.LDAPBackend")
 
