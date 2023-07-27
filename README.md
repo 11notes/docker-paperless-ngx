@@ -1,5 +1,6 @@
 # Debian :: paperless-ngx+
 Run paperless-ngx based on Debian. Big, heavy, mostly secure and a bit slow 🍟
+
 This image adds Active Directory authentication to paperless-ngx.
 
 ## Run
@@ -33,6 +34,7 @@ docker run --name paperless-ngx \
 
 ## Built with
 * [paperless-ngx](https://github.com/paperless-ngx/paperless-ngx)
+* [django-python3-ldap](https://github.com/etianen/django-python3-ldap)
 
 ## Tips
 * Don't bind to ports < 1024 (requires root), use NAT/reverse proxy
