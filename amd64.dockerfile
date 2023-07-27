@@ -1,10 +1,19 @@
 # :: Header
 FROM paperlessngx/paperless-ngx:1.16.5
 
-# :: copy root filesystem changes and add execution rights to init scripts
-  COPY ./rootfs /
+# :: Run
+  USER root
 
-WORKDIR /usr/src/paperless/src/paperless
-RUN set -ex \
-  pip install --upgrade pip \
-  pip install django-python3-ldap;
+  # :: update image
+    RUN set -ex; \
+      apt update -y; \
+      apt upgrade -y; \
+      pip install --upgrade pip;
+
+  # :: copy root filesystem changes
+    COPY ./rootfs /
+
+  # :: install ldap
+    RUN set -ex; \
+      cd /usr/src/paperless/src; \
+      pip install django_python3_ldap;
