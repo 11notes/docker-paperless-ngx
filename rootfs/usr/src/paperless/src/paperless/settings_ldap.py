@@ -1,10 +1,6 @@
-import logging
 import os
-import subprocess
-import sys
 import django_python3_ldap
 
-logger = logging.getLogger(__name__)
 LDAP_AUTH_URL = [os.getenv('PAPERLESS_AD_AUTH_URL')]
 LDAP_AUTH_SEARCH_BASE = os.getenv('PAPERLESS_AD_AUTH_SEARCH_BASE')
 LDAP_AUTH_CONNECTION_USERNAME = os.getenv('PAPERLESS_AD_AUTH_USER')
@@ -25,7 +21,6 @@ from .settings import *
 INSTALLED_APPS.append("django_python3_ldap")
 AUTHENTICATION_BACKENDS.insert(2, "django_python3_ldap.auth.LDAPBackend")
 
-
 LDAP_AUTH_FORMAT_SEARCH_FILTERS = "paperless.settings_ldap.custom_format_search_filters"
 def custom_format_search_filters(ldap_fields):
     if PAPERLESS_AD_USER_GROUP:
@@ -45,7 +40,6 @@ def custom_sync_user_relations(user, ldap_attributes, *, connection=None, dn=Non
             is_admin = True
 
     if user.is_staff != is_admin or user.is_superuser != is_admin:
-        logger.info("set admin %s for user %s", is_admin, ldap_attributes['sAMAccountName'][0])
         user.is_staff = is_admin
         user.is_superuser = is_admin
         user.save()
