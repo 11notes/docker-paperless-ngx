@@ -1,5 +1,5 @@
 # :: Header
-FROM paperlessngx/paperless-ngx:2.7.2
+FROM paperlessngx/paperless-ngx:2.8.6
 
 # :: Run
   USER root
