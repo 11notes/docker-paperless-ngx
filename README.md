@@ -1,7 +1,7 @@
 ![Banner](https://github.com/11notes/defaults/blob/main/static/img/banner.png?raw=true)
 
 # paperless-ngx
-![size](https://img.shields.io/docker/image-size/11notes/paperless-ngx/2.10?color=0eb305) ![version](https://img.shields.io/docker/v/11notes/paperless-ngx/2.10?color=eb7a09) ![pulls](https://img.shields.io/docker/pulls/11notes/paperless-ngx?color=2b75d6) ![stars](https://img.shields.io/docker/stars/11notes/paperless-ngx?color=e6a50e) [<img src="https://img.shields.io/badge/github-11notes-blue?logo=github">](https://github.com/11notes)
+![size](https://img.shields.io/docker/image-size/11notes/paperless-ngx/2.11?color=0eb305) ![version](https://img.shields.io/docker/v/11notes/paperless-ngx/2.11?color=eb7a09) ![pulls](https://img.shields.io/docker/pulls/11notes/paperless-ngx?color=2b75d6) ![stars](https://img.shields.io/docker/stars/11notes/paperless-ngx?color=e6a50e) [<img src="https://img.shields.io/badge/github-11notes-blue?logo=github">](https://github.com/11notes)
 
 **Store all your paper documents protected by Active Directory as IdP**
 
@@ -10,10 +10,10 @@ What can I do with this? This image adds Active Directory authentication to pape
 
 # COMPOSE
 ```yaml
-version: "3.8"
+name: "paperless-ngx"
 services:
   redis:
-    image: "11notes/redis:7.2.5"
+    image: "11notes/redis:7.4.0"
     environment:
       REDIS_PASSWORD: "*****************"
       TZ: Europe/Zurich
@@ -34,7 +34,7 @@ services:
       - backend
     restart: always
   app:
-    image: "11notes/paperless-ngx:2.10"
+    image: "11notes/paperless-ngx:2.11"
     environment:
       TZ: "Europe/Zurich"
       PAPERLESS_REDIS: "redis://:*****************@redis:6379"
@@ -60,7 +60,7 @@ services:
       PAPERLESS_AD_ADMIN_GROUP_CN: "CN=Administrators,OU=paperless-ngx,OU=Services,OU=Groups,OU=Domain,DC=ad,DC=domain,DC=com"
       PAPERLESS_OCR_LANGUAGES: "eng deu"
       PAPERLESS_OCR_LANGUAGE: "deu"
-      PAPERLESS_SECRET_KEY: ****************************************"
+      PAPERLESS_SECRET_KEY: "****************************************"
       PAPERLESS_TIME_ZONE: "Europe/Zurich"
       PAPERLESS_URL: "https://paperless.domain.com"
     depends_on:
@@ -134,15 +134,17 @@ networks:
 | `PAPERLESS_AD_AUTH_USER` | user with AD read permissions |  |
 | `PAPERLESS_AD_AUTH_PASSWORD` | password of user with AD read permissions |  |
 
+# SOURCE
+* [11notes/paperless-ngx](https://github.com/11notes/docker-paperless-ngx)
+
 # PARENT IMAGE
-* [paperlessngx/paperless-ngx](https://hub.docker.com/r/paperlessngx/paperless-ngx)
+* [paperlessngx/paperless-ngx:2.11](https://hub.docker.com/r/paperlessngx/paperless-ngx)
 
 # BUILT WITH
 * [paperless-ngx](https://github.com/paperless-ngx/paperless-ngx)
 * [django-python3-ldap](https://github.com/etianen/django-python3-ldap)
 
 # TIPS
-* Allow non-root ports < 1024 via `echo "net.ipv4.ip_unprivileged_port_start={n}" > /etc/sysctl.d/ports.conf`
 * Use a reverse proxy like Traefik, Nginx to terminate TLS with a valid certificate
 * Use Let’s Encrypt certificates to protect your SSL endpoints
 

@@ -1,7 +1,7 @@
-version: "3.8"
+name: "paperless-ngx"
 services:
   redis:
-    image: "11notes/redis:7.2.5"
+    image: "11notes/redis:7.4.0"
     environment:
       REDIS_PASSWORD: "*****************"
       TZ: Europe/Zurich
@@ -22,7 +22,7 @@ services:
       - backend
     restart: always
   app:
-    image: "11notes/paperless-ngx:2.10"
+    image: "11notes/paperless-ngx:2.11"
     environment:
       TZ: "Europe/Zurich"
       PAPERLESS_REDIS: "redis://:*****************@redis:6379"
@@ -48,7 +48,7 @@ services:
       PAPERLESS_AD_ADMIN_GROUP_CN: "CN=Administrators,OU=paperless-ngx,OU=Services,OU=Groups,OU=Domain,DC=ad,DC=domain,DC=com"
       PAPERLESS_OCR_LANGUAGES: "eng deu"
       PAPERLESS_OCR_LANGUAGE: "deu"
-      PAPERLESS_SECRET_KEY: ****************************************"
+      PAPERLESS_SECRET_KEY: "****************************************"
       PAPERLESS_TIME_ZONE: "Europe/Zurich"
       PAPERLESS_URL: "https://paperless.domain.com"
     depends_on:

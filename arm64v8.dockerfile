@@ -1,5 +1,5 @@
 # :: Header
-FROM paperlessngx/paperless-ngx:2.11
+FROM --platform=linux/arm64 paperlessngx/paperless-ngx:2.11
 
 # :: Run
   USER root

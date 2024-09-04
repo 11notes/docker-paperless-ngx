@@ -1,0 +1,11 @@
+image: 11notes/paperless-ngx:2.11
+manifests:
+  - image: 11notes/paperless-ngx:2.11
+    platform:
+      architecture: amd64
+      os: linux
+  - image: 11notes/paperless-ngx:2.11
+    platform:
+      architecture: arm64
+      os: linux
+      variant: v8
