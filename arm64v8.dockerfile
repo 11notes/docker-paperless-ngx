@@ -1,5 +1,9 @@
+# :: QEMU
+  FROM multiarch/qemu-user-static:x86_64-aarch64 as qemu
+
 # :: Header
-FROM --platform=linux/arm64 paperlessngx/paperless-ngx:2.11
+  FROM --platform=linux/arm64 paperlessngx/paperless-ngx:2.11
+  COPY --from=qemu /usr/bin/qemu-aarch64-static /usr/bin
 
 # :: Run
   USER root
