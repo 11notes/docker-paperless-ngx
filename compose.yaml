@@ -22,7 +22,7 @@ services:
       - backend
     restart: always
   app:
-    image: "11notes/paperless-ngx:2.11"
+    image: "11notes/paperless-ngx:2.13"
     environment:
       TZ: "Europe/Zurich"
       PAPERLESS_REDIS: "redis://:*****************@redis:6379"

@@ -1,12 +1,12 @@
 ![Banner](https://github.com/11notes/defaults/blob/main/static/img/banner.png?raw=true)
 
 # paperless-ngx
-![size](https://img.shields.io/docker/image-size/11notes/paperless-ngx/2.11?color=0eb305) ![version](https://img.shields.io/docker/v/11notes/paperless-ngx/2.11?color=eb7a09) ![pulls](https://img.shields.io/docker/pulls/11notes/paperless-ngx?color=2b75d6) ![stars](https://img.shields.io/docker/stars/11notes/paperless-ngx?color=e6a50e) [<img src="https://img.shields.io/badge/github-11notes-blue?logo=github">](https://github.com/11notes)
+[<img src="https://img.shields.io/badge/github-source-blue?logo=github">](https://github.com/11notes/docker-paperless-ngx/tree/2.13) ![size](https://img.shields.io/docker/image-size/11notes/paperless-ngx/2.13?color=0eb305) ![version](https://img.shields.io/docker/v/11notes/paperless-ngx/2.13?color=eb7a09) ![pulls](https://img.shields.io/docker/pulls/11notes/paperless-ngx?color=2b75d6)
 
 **Store all your paper documents protected by Active Directory as IdP**
 
 # SYNOPSIS
-What can I do with this? This image adds Active Directory authentication to paperless-ngx (UPN only!).
+**What can I do with this?** This image adds Active Directory authentication to paperless-ngx (UPN only!).
 
 # COMPOSE
 ```yaml
@@ -34,7 +34,7 @@ services:
       - backend
     restart: always
   app:
-    image: "11notes/paperless-ngx:2.11"
+    image: "11notes/paperless-ngx:2.13"
     environment:
       TZ: "Europe/Zurich"
       PAPERLESS_REDIS: "redis://:*****************@redis:6379"
@@ -135,10 +135,10 @@ networks:
 | `PAPERLESS_AD_AUTH_PASSWORD` | password of user with AD read permissions |  |
 
 # SOURCE
-* [11notes/paperless-ngx](https://github.com/11notes/docker-paperless-ngx)
+* [11notes/paperless-ngx:2.13](https://github.com/11notes/docker-paperless-ngx/tree/2.13)
 
 # PARENT IMAGE
-* [paperlessngx/paperless-ngx:2.11](https://hub.docker.com/r/paperlessngx/paperless-ngx)
+* [paperlessngx/paperless-ngx:2.13](https://hub.docker.com/r/paperlessngx/paperless-ngx)
 
 # BUILT WITH
 * [paperless-ngx](https://github.com/paperless-ngx/paperless-ngx)
