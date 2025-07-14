@@ -1,0 +1,15 @@
+{
+  "image": "11notes/paperless-ngx",
+  "name": "paperless-ngx",
+  "root": "/paperless-ngx",
+  "semver": {
+    "version": "2.17.0"
+  },
+  "readme": {
+    "description": "Run paperless-ngx rootless by default (no SUID)!",
+    "introduction": "A community-supported supercharged document management system: scan, index and archive all your documents.",
+    "built": {
+      "paperless-ngxio/paperless-ngx": "https://github.com/paperless-ngx/paperless-ngx"
+    }
+  }
+}

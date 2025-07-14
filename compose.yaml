@@ -1,99 +1,98 @@
-name: "paperless-ngx"
+name: "dms"
 services:
+  postgres:
+    image: "11notes/postgres:16"
+    read_only: true
+    environment:
+      TZ: "Europe/Zurich"
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      # make a full and compressed database backup each day at 03:00
+      POSTGRES_BACKUP_SCHEDULE: "0 3 * * *"
+    volumes:
+      - "postgres.etc:/postgres/etc"
+      - "postgres.var:/postgres/var"
+      - "postgres.backup:/postgres/backup"
+    tmpfs:
+      # needed for read-only
+      - "/postgres/run:uid=1000,gid=1000"
+      - "/postgres/log:uid=1000,gid=1000"
+    networks:
+      backend:
+    restart: "always"
+
   redis:
     image: "11notes/redis:7.4.0"
     environment:
-      REDIS_PASSWORD: "*****************"
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
       TZ: Europe/Zurich
     volumes:
-      - "redis-etc:/redis/etc"
-      - "redis-var:/redis/var"
+      - "redis.etc:/redis/etc"
+      - "redis.var:/redis/var"
     networks:
-      - backend
+      backend:
     restart: always
-  postgres:
-    image: "11notes/postgres:16"
-    environment:
-      POSTGRES_PASSWORD: "*****************"
-      TZ: Europe/Zurich
-    volumes:
-      - "postgres-var:/postgres/var"
-    networks:
-      - backend
-    restart: always
-  app:
-    image: "11notes/paperless-ngx:2.13"
+
+  paperless-ngx:
+    depends_on:
+      postgres:
+        condition: "service_healthy"
+        restart: true
+      redis:
+        condition: "service_healthy"
+        restart: true
+    image: "11notes/paperless-ngx:2.17.0"
     environment:
       TZ: "Europe/Zurich"
-      PAPERLESS_REDIS: "redis://:*****************@redis:6379"
-      PAPERLESS_DBHOST: "postgres"
-      PAPERLESS_DBNAME: "postgres"
-      PAPERLESS_DBUSER: "postgres"
-      PAPERLESS_DBPASS: "*****************"
-      USERMAP_UID: "1000"
-      USERMAP_GID: "1000"
+      PAPERLESS_REDIS: "redis://:${REDIS_PASSWORD}@redis:6379"
+      PAPERLESS_DBPASS: ${POSTGRES_PASSWORD}
       PAPERLESS_CONSUMER_POLLING: "60"
       PAPERLESS_CONSUMER_POLLING_DELAY: "30"
       PAPERLESS_CONSUMER_POLLING_RETRY_COUNT: "3"
       PAPERLESS_OCR_SKIP_ARCHIVE_FILE: "never"
       PAPERLESS_CONSUMER_RECURSIVE: "false"
-      DJANGO_SETTINGS_MODULE: "paperless.settings_ldap"
-      PAPERLESS_AD_AUTH_URL: "ldaps://ad.domain.com:636"
-      PAPERLESS_AD_DOMAIN: "ad.domain.com"
-      PAPERLESS_AD_UPN_DOMAIN: "domain.com"
-      PAPERLESS_AD_AUTH_SEARCH_BASE: "DC=ad,DC=domain,DC=com"
-      PAPERLESS_AD_AUTH_USER: "ldap.paperless"
-      PAPERLESS_AD_AUTH_PASSWORD: "******************"
-      PAPERLESS_AD_USER_GROUP_CN: "CN=Users,OU=paperless-ngx,OU=Services,OU=Groups,OU=Domain,DC=ad,DC=domain,DC=com"
-      PAPERLESS_AD_ADMIN_GROUP_CN: "CN=Administrators,OU=paperless-ngx,OU=Services,OU=Groups,OU=Domain,DC=ad,DC=domain,DC=com"
       PAPERLESS_OCR_LANGUAGES: "eng deu"
       PAPERLESS_OCR_LANGUAGE: "deu"
-      PAPERLESS_SECRET_KEY: "****************************************"
+      PAPERLESS_SECRET_KEY: ${PAPERLESS_NGX_SECRET_KEY}
       PAPERLESS_TIME_ZONE: "Europe/Zurich"
-      PAPERLESS_URL: "https://paperless.domain.com"
-    depends_on:
-      redis:
-        condition: service_healthy
-        restart: true
-      postgres:
-        condition: service_healthy
-        restart: true
+      PAPERLESS_URL: "https://${PAPERLESS_NGX_FQDN}"
+      # LDAP module for ADDS with UPN as login
+      DJANGO_SETTINGS_MODULE: "paperless.settings_ldap"
+      PAPERLESS_AD_AUTH_URL: "ldaps://${PAPERLESS_NGX_LDAP_FQDN}:636"
+      PAPERLESS_AD_DOMAIN: ${PAPERLESS_NGX_LDAP_FQDN}
+      PAPERLESS_AD_UPN_DOMAIN: ${PAPERLESS_NGX_LDAP_UPN}
+      PAPERLESS_AD_AUTH_SEARCH_BASE: ${PAPERLESS_NGX_LDAP_SEARCH_CN}
+      PAPERLESS_AD_AUTH_USER: ${PAPERLESS_NGX_LDAP_USER}
+      PAPERLESS_AD_AUTH_PASSWORD: ${PAPERLESS_NGX_LDAP_PASSWORD}
+      PAPERLESS_AD_USER_GROUP_CN: ${PAPERLESS_NGX_LDAP_USERS_CN}
+      PAPERLESS_AD_ADMIN_GROUP_CN: ${PAPERLESS_NGX_LDAP_ADMINS_CN}
     volumes:
-      - "consume:/usr/src/paperless/consume"
-      - "originals:/usr/src/paperless/media/documents/originals"
-      - "archive:/usr/src/paperless/media/documents/archive"
-      - "paperless-data:/usr/src/paperless/data"
-      - "paperless-export:/usr/src/paperless/export"
-      - "paperless-thumbnails:/usr/src/paperless/media/documents/thumbnails"
-    ports:
-      - 8000:8000/tcp
+      - "paperless-ngx.consume:/usr/src/paperless/consume"
+      - "paperless-ngx.originals:/usr/src/paperless/media/documents/originals"
+      - "paperless-ngx.archive:/usr/src/paperless/media/documents/archive"
+      - "paperless-ngx.data:/usr/src/paperless/data"
+      - "paperless-ngx.export:/usr/src/paperless/export"
+      - "paperless-ngx.thumbnails:/usr/src/paperless/media/documents/thumbnails"
     networks:
-      - backend
-      - frontend
-    restart: always
+      frontend:
+      backend:
+    ports:
+      - "3000:8000/tcp"
+    restart: "always"
+
 volumes:
-  redis-etc:
-  redis-var:
-  postgres-var:
-  paperless-data:
-  paperless-export:
-  paperless-thumbnails:
-  consume:
-    driver_opts:
-      type: cifs
-      o: username=service.paperless,password=*****************,domain=DOMAIN,uid=1000,gid=1000,dir_mode=0700,file_mode=0700
-      device: //dfs/domain.com/paperless-ngx/scanner
-  originals:
-    driver_opts:
-      type: cifs
-      o: username=service.paperless,password=*****************,domain=DOMAIN,uid=1000,gid=1000,dir_mode=0700,file_mode=0700
-      device: //dfs/domain.com/paperless-ngx/originals
-  archive:
-    driver_opts:
-      type: cifs
-      o: username=service.paperless,password=*****************,domain=DOMAIN,uid=1000,gid=1000,dir_mode=0700,file_mode=0700
-      device: //dfs/domain.com/paperless-ngx
+  postgres.etc:
+  postgres.var:
+  postgres.backup:
+  redis.etc:
+  redis.var:
+  paperless-ngx.consume:
+  paperless-ngx.originals:
+  paperless-ngx.archive:
+  paperless-ngx.data:
+  paperless-ngx.export:
+  paperless-ngx.thumbnails:  
+
 networks:
+  frontend:
   backend:
     internal: true
-  frontend:
