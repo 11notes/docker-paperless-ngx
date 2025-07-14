@@ -11,5 +11,9 @@
     "built": {
       "paperless-ngxio/paperless-ngx": "https://github.com/paperless-ngx/paperless-ngx"
     }
+  },
+  "grype":{
+    "fail":false,
+    "severity":"critical"
   }
 }
