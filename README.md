@@ -169,10 +169,10 @@ docker pull quay.io/11notes/paperless-ngx:2.18.2
 * [11notes/paperless-ngx](https://github.com/11notes/docker-PAPERLESS-NGX)
 
 # PARENT IMAGE 🏛️
-* [${{ json_readme_parent_image }}](${{ json_readme_parent_url }})
+* [paperlessngx/paperless-ngx](https://hub.docker.com/r/paperlessngx/paperless-ngx)
 
 # BUILT WITH 🧰
-* [paperless-ngxio/paperless-ngx](https://github.com/paperless-ngx/paperless-ngx)
+* [paperless-ngx](https://github.com/paperless-ngx/paperless-ngx)
 * [11notes/util](https://github.com/11notes/docker-util)
 
 # GENERAL TIPS 📌
@@ -187,4 +187,4 @@ docker pull quay.io/11notes/paperless-ngx:2.18.2
 # ElevenNotes™️
 This image is provided to you at your own risk. Always make backups before updating an image to a different version. Check the [releases](https://github.com/11notes/docker-paperless-ngx/releases) for breaking changes. If you have any problems with using this image simply raise an [issue](https://github.com/11notes/docker-paperless-ngx/issues), thanks. If you have a question or inputs please create a new [discussion](https://github.com/11notes/docker-paperless-ngx/discussions) instead of an issue. You can find all my other repositories on [github](https://github.com/11notes?tab=repositories).
 
-*created 23.08.2025, 07:13:36 (CET)*
+*created 26.08.2025, 11:44:03 (CET)*
