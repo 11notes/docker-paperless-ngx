@@ -3,7 +3,7 @@
   "name": "paperless-ngx",
   "root": "/paperless-ngx",
   "semver": {
-    "version": "2.18.2"
+    "version": "2.18.3"
   },
   "readme": {
     "description": "Run paperless-ngx rootless by default (no SUID)!",
@@ -15,8 +15,8 @@
       "paperless-ngx": "https://github.com/paperless-ngx/paperless-ngx"
     }
   },
-  "grype":{
-    "fail":false,
-    "severity":"critical"
+  "grype": {
+    "fail": false,
+    "severity": "critical"
   }
 }
