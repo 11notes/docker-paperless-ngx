@@ -3,7 +3,7 @@
   "name": "paperless-ngx",
   "root": "/paperless-ngx",
   "semver": {
-    "version": "2.18.4"
+    "version": "2.19.0"
   },
   "readme": {
     "description": "Run paperless-ngx rootless by default (no SUID)!",
