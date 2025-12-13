@@ -40,7 +40,7 @@ services:
       redis:
         condition: "service_healthy"
         restart: true
-    image: "11notes/paperless-ngx:2.20.1"
+    image: "11notes/paperless-ngx:2.20.2"
     environment:
       TZ: "Europe/Zurich"
       PAPERLESS_REDIS: "redis://:${REDIS_PASSWORD}@redis:6379"
