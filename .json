@@ -1,5 +1,6 @@
 {
   "image": "11notes/paperless-ngx",
+  "platform":"amd64,arm64",
   "name": "paperless-ngx",
   "root": "/paperless-ngx",
   "semver": {
