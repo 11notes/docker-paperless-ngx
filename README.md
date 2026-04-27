@@ -76,7 +76,7 @@ services:
       redis:
         condition: "service_healthy"
         restart: true
-    image: "11notes/paperless-ngx:2.20.14"
+    image: "11notes/paperless-ngx:2.20.15"
     environment:
       TZ: "Europe/Zurich"
       PAPERLESS_REDIS: "redis://:${REDIS_PASSWORD}@redis:6379"
@@ -152,20 +152,20 @@ To find out how you can change the default UID/GID of this container image, cons
 # MAIN TAGS 🏷️
 These are the main tags for the image. There is also a tag for each commit and its shorthand sha256 value.
 
-* [2.20.14](https://hub.docker.com/r/11notes/paperless-ngx/tags?name=2.20.14)
-* [2.20.14-unraid](https://hub.docker.com/r/11notes/paperless-ngx/tags?name=2.20.14-unraid)
-* [2.20.14-nobody](https://hub.docker.com/r/11notes/paperless-ngx/tags?name=2.20.14-nobody)
+* [2.20.15](https://hub.docker.com/r/11notes/paperless-ngx/tags?name=2.20.15)
+* [2.20.15-unraid](https://hub.docker.com/r/11notes/paperless-ngx/tags?name=2.20.15-unraid)
+* [2.20.15-nobody](https://hub.docker.com/r/11notes/paperless-ngx/tags?name=2.20.15-nobody)
 
 ### There is no latest tag, what am I supposed to do about updates?
-It is my opinion that the ```:latest``` tag is a bad habbit and should not be used at all. Many developers introduce **breaking changes** in new releases. This would messed up everything for people who use ```:latest```. If you don’t want to change the tag to the latest [semver](https://semver.org/), simply use the short versions of [semver](https://semver.org/). Instead of using ```:2.20.14``` you can use ```:2``` or ```:2.20```. Since on each new version these tags are updated to the latest version of the software, using them is identical to using ```:latest``` but at least fixed to a major or minor version. Which in theory should not introduce breaking changes.
+It is my opinion that the ```:latest``` tag is a bad habbit and should not be used at all. Many developers introduce **breaking changes** in new releases. This would messed up everything for people who use ```:latest```. If you don’t want to change the tag to the latest [semver](https://semver.org/), simply use the short versions of [semver](https://semver.org/). Instead of using ```:2.20.15``` you can use ```:2``` or ```:2.20```. Since on each new version these tags are updated to the latest version of the software, using them is identical to using ```:latest``` but at least fixed to a major or minor version. Which in theory should not introduce breaking changes.
 
 If you still insist on having the bleeding edge release of this app, simply use the ```:rolling``` tag, but be warned! You will get the latest version of the app instantly, regardless of breaking changes or security issues or what so ever. You do this at your own risk!
 
 # REGISTRIES ☁️
 ```
-docker pull 11notes/paperless-ngx:2.20.14
-docker pull ghcr.io/11notes/paperless-ngx:2.20.14
-docker pull quay.io/11notes/paperless-ngx:2.20.14
+docker pull 11notes/paperless-ngx:2.20.15
+docker pull ghcr.io/11notes/paperless-ngx:2.20.15
+docker pull quay.io/11notes/paperless-ngx:2.20.15
 ```
 
 # UNRAID VERSION 🟠
@@ -196,4 +196,4 @@ This image supports nobody by default. Simply add **-nobody** to any tag and the
 # ElevenNotes™️
 This image is provided to you at your own risk. Always make backups before updating an image to a different version. Check the [releases](https://github.com/11notes/docker-paperless-ngx/releases) for breaking changes. If you have any problems with using this image simply raise an [issue](https://github.com/11notes/docker-paperless-ngx/issues), thanks. If you have a question or inputs please create a new [discussion](https://github.com/11notes/docker-paperless-ngx/discussions) instead of an issue. You can find all my other repositories on [github](https://github.com/11notes?tab=repositories).
 
-*created 15.04.2026, 09:03:13 (CET)*
+*created 27.04.2026, 09:42:25 (CET)*
