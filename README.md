@@ -36,38 +36,6 @@ If you value security, simplicity and optimizations to the extreme, then this im
 ```yaml
 name: "dms"
 services:
-  postgres:
-    image: "11notes/postgres:16"
-    read_only: true
-    environment:
-      TZ: "Europe/Zurich"
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      # make a full and compressed database backup each day at 03:00
-      POSTGRES_BACKUP_SCHEDULE: "0 3 * * *"
-    volumes:
-      - "postgres.etc:/postgres/etc"
-      - "postgres.var:/postgres/var"
-      - "postgres.backup:/postgres/backup"
-    tmpfs:
-      # needed for read-only
-      - "/postgres/run:uid=1000,gid=1000"
-      - "/postgres/log:uid=1000,gid=1000"
-    networks:
-      backend:
-    restart: "always"
-
-  redis:
-    image: "11notes/redis:7.4.0"
-    environment:
-      REDIS_PASSWORD: ${REDIS_PASSWORD}
-      TZ: Europe/Zurich
-    volumes:
-      - "redis.etc:/redis/etc"
-      - "redis.var:/redis/var"
-    networks:
-      backend:
-    restart: always
-
   paperless-ngx:
     depends_on:
       postgres:
@@ -115,18 +83,52 @@ services:
       - "3000:8000/tcp"
     restart: "always"
 
+  postgres:
+    # for more information about this image checkout:
+    # https://github.com/11notes/docker-postgres
+    image: "11notes/postgres:18"
+    read_only: true
+    environment:
+      TZ: "Europe/Zurich"
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_BACKUP_SCHEDULE: "0 3 * * *"
+    volumes:
+      - "postgres.etc:/postgres/etc"
+      - "postgres.var:/postgres/var"
+      - "postgres.backup:/postgres/backup"
+    tmpfs:
+      - "/postgres/run:uid=1000,gid=1000"
+      - "/postgres/log:uid=1000,gid=1000"
+    networks:
+      backend:
+    restart: "always"
+
+  redis:
+    # for more information about this image checkout:
+    # https://github.com/11notes/docker-redis
+    image: "11notes/redis:7.4.0"
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+      TZ: Europe/Zurich
+    volumes:
+      - "redis.etc:/redis/etc"
+      - "redis.var:/redis/var"
+    networks:
+      backend:
+    restart: always
+
 volumes:
-  postgres.etc:
-  postgres.var:
-  postgres.backup:
-  redis.etc:
-  redis.var:
   paperless-ngx.consume:
   paperless-ngx.originals:
   paperless-ngx.archive:
   paperless-ngx.data:
   paperless-ngx.export:
-  paperless-ngx.thumbnails:  
+  paperless-ngx.thumbnails:
+  postgres.etc:
+  postgres.var:
+  postgres.backup:
+  redis.etc:
+  redis.var:
 
 networks:
   frontend:
@@ -196,4 +198,4 @@ This image supports nobody by default. Simply add **-nobody** to any tag and the
 # ElevenNotes™️
 This image is provided to you at your own risk. Always make backups before updating an image to a different version. Check the [releases](https://github.com/11notes/docker-paperless-ngx/releases) for breaking changes. If you have any problems with using this image simply raise an [issue](https://github.com/11notes/docker-paperless-ngx/issues), thanks. If you have a question or inputs please create a new [discussion](https://github.com/11notes/docker-paperless-ngx/discussions) instead of an issue. You can find all my other repositories on [github](https://github.com/11notes?tab=repositories).
 
-*created 27.04.2026, 09:42:25 (CET)*
+*created 06.07.2026, 11:13:42 (CET)*
