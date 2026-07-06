@@ -1,14 +1,14 @@
 # ╔═════════════════════════════════════════════════════╗
 # ║                       SETUP                         ║
 # ╚═════════════════════════════════════════════════════╝
-  # GLOBAL
+# GLOBAL
   ARG APP_UID=1000 \
       APP_GID=1000 \
-      APP_VERSION=2.17.0
+      APP_VERSION=0
 
-  # :: FOREIGN IMAGES
+# :: FOREIGN IMAGES
   FROM 11notes/util AS util
-  
+
 
 # ╔═════════════════════════════════════════════════════╗
 # ║                       IMAGE                         ║

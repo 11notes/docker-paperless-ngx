@@ -1,37 +1,5 @@
 name: "dms"
 services:
-  postgres:
-    image: "11notes/postgres:16"
-    read_only: true
-    environment:
-      TZ: "Europe/Zurich"
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      # make a full and compressed database backup each day at 03:00
-      POSTGRES_BACKUP_SCHEDULE: "0 3 * * *"
-    volumes:
-      - "postgres.etc:/postgres/etc"
-      - "postgres.var:/postgres/var"
-      - "postgres.backup:/postgres/backup"
-    tmpfs:
-      # needed for read-only
-      - "/postgres/run:uid=1000,gid=1000"
-      - "/postgres/log:uid=1000,gid=1000"
-    networks:
-      backend:
-    restart: "always"
-
-  redis:
-    image: "11notes/redis:7.4.0"
-    environment:
-      REDIS_PASSWORD: ${REDIS_PASSWORD}
-      TZ: Europe/Zurich
-    volumes:
-      - "redis.etc:/redis/etc"
-      - "redis.var:/redis/var"
-    networks:
-      backend:
-    restart: always
-
   paperless-ngx:
     depends_on:
       postgres:
@@ -40,7 +8,7 @@ services:
       redis:
         condition: "service_healthy"
         restart: true
-    image: "11notes/paperless-ngx:2.20.15"
+    image: "11notes/paperless-ngx:2.20.7"
     environment:
       TZ: "Europe/Zurich"
       PAPERLESS_REDIS: "redis://:${REDIS_PASSWORD}@redis:6379"
@@ -79,18 +47,52 @@ services:
       - "3000:8000/tcp"
     restart: "always"
 
+  postgres:
+    # for more information about this image checkout:
+    # https://github.com/11notes/docker-postgres
+    image: "11notes/postgres:18"
+    read_only: true
+    environment:
+      TZ: "Europe/Zurich"
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_BACKUP_SCHEDULE: "0 3 * * *"
+    volumes:
+      - "postgres.etc:/postgres/etc"
+      - "postgres.var:/postgres/var"
+      - "postgres.backup:/postgres/backup"
+    tmpfs:
+      - "/postgres/run:uid=1000,gid=1000"
+      - "/postgres/log:uid=1000,gid=1000"
+    networks:
+      backend:
+    restart: "always"
+
+  redis:
+    # for more information about this image checkout:
+    # https://github.com/11notes/docker-redis
+    image: "11notes/redis:7.4.0"
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+      TZ: Europe/Zurich
+    volumes:
+      - "redis.etc:/redis/etc"
+      - "redis.var:/redis/var"
+    networks:
+      backend:
+    restart: always
+
 volumes:
-  postgres.etc:
-  postgres.var:
-  postgres.backup:
-  redis.etc:
-  redis.var:
   paperless-ngx.consume:
   paperless-ngx.originals:
   paperless-ngx.archive:
   paperless-ngx.data:
   paperless-ngx.export:
-  paperless-ngx.thumbnails:  
+  paperless-ngx.thumbnails:
+  postgres.etc:
+  postgres.var:
+  postgres.backup:
+  redis.etc:
+  redis.var:
 
 networks:
   frontend:
